@@ -46,17 +46,15 @@ void vest::startvest (
   extended_symbol depositSymbol = deposit.get_extended_symbol();
   check(depositAmount > 0, "quantity must be positive.");
 
-  // Remove balance
+  // Substract balance
   account_table accounts(self, self.value);
   auto account = accounts.find(from.value);
   check(account != accounts.end(), "account does not exist");
 
-  if (account != accounts.end()) {
-    accounts.modify(account, from, [&](auto& a) {
-      check(a.balances[depositSymbol] >= depositAmount, "not enough deposited");
-      a.balances[depositSymbol] -= depositAmount;
-    });
-  }
+  accounts.modify(account, from, [&](auto& a) {
+    check(a.balances[depositSymbol] >= depositAmount, "not enough deposited");
+    a.balances[depositSymbol] -= depositAmount;
+  });
 
   // Add vest
   vest_table vests(get_self(), get_self().value);
