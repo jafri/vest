@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/jafri/eosio.contracts/contracts/tracelytics/src/users.cpp
+tracelytics/tracelytics.hpp
+/Users/jafri/eosio.contracts/contracts/tracelytics/src/tracelytics/tracelytics.hpp
+
+tracelytics/include/tracelytics/tracelytics.hpp
+eosio/eosio.hpp
+-
+eosio/privileged.hpp
+-
+eosio/crypto.hpp
+-
+eosio/asset.hpp
+-
+string
+-
+variant
+-
+any
+-
+

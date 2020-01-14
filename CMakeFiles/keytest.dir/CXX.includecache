@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/jafri/eosio.contracts/contracts/keytest/src/keytest.cpp
+keytest/keytest.hpp
+/Users/jafri/eosio.contracts/contracts/keytest/src/keytest/keytest.hpp
+
+keytest/include/keytest/keytest.hpp
+eosio/eosio.hpp
+-
+eosio/crypto.hpp
+-
+

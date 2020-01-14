@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/jafri/eosio.contracts/contracts/vest/src/vest.cpp
+vest/vest.hpp
+/Users/jafri/eosio.contracts/contracts/vest/src/vest/vest.hpp
+
+vest/include/vest/vest.hpp
+eosio/eosio.hpp
+-
+eosio/time.hpp
+-
+eosio/asset.hpp
+-
+eosio/transaction.hpp
+-
+

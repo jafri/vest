@@ -1,0 +1,176 @@
+{
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT ",
+    "version": "eosio::abi/1.1",
+    "types": [],
+    "structs": [
+        {
+            "name": "Account",
+            "base": "",
+            "fields": [
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "balances",
+                    "type": "pair_extended_symbol_int64[]"
+                }
+            ]
+        },
+        {
+            "name": "Vest",
+            "base": "",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "uint64"
+                },
+                {
+                    "name": "deposit",
+                    "type": "extended_asset"
+                },
+                {
+                    "name": "vestPerSecond",
+                    "type": "float32"
+                },
+                {
+                    "name": "remainingVest",
+                    "type": "float32"
+                },
+                {
+                    "name": "startTime",
+                    "type": "time_point"
+                },
+                {
+                    "name": "lastVestTime",
+                    "type": "time_point"
+                },
+                {
+                    "name": "from",
+                    "type": "name"
+                },
+                {
+                    "name": "to",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "extended_symbol",
+            "base": "",
+            "fields": [
+                {
+                    "name": "symbol",
+                    "type": "symbol"
+                },
+                {
+                    "name": "contract",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "pair_extended_symbol_int64",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "extended_symbol"
+                },
+                {
+                    "name": "value",
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "name": "startvest",
+            "base": "",
+            "fields": [
+                {
+                    "name": "deposit",
+                    "type": "extended_asset"
+                },
+                {
+                    "name": "vestPerSecond",
+                    "type": "float32"
+                },
+                {
+                    "name": "startTime",
+                    "type": "time_point"
+                },
+                {
+                    "name": "from",
+                    "type": "name"
+                },
+                {
+                    "name": "to",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "vestnow",
+            "base": "",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "uint64"
+                },
+                {
+                    "name": "account",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "withdraw",
+            "base": "",
+            "fields": [
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "withdrawal",
+                    "type": "extended_asset"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "name": "startvest",
+            "type": "startvest",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "vestnow",
+            "type": "vestnow",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "withdraw",
+            "type": "withdraw",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [
+        {
+            "name": "account",
+            "type": "Account",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "vest",
+            "type": "Vest",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        }
+    ],
+    "ricardian_clauses": [],
+    "variants": []
+}

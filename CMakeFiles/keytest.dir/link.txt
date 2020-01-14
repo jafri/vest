@@ -1,0 +1,1 @@
+/Users/jafri/eosio.cdt/build/bin/eosio-ld  CMakeFiles/keytest.dir/src/keytest.cpp.obj -o keytest.wasm 

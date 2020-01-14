@@ -1,0 +1,1 @@
+/Users/jafri/eosio.cdt/build/bin/eosio-ld  CMakeFiles/tracelytics.dir/src/tracelytics.cpp.obj CMakeFiles/tracelytics.dir/src/users.cpp.obj CMakeFiles/tracelytics.dir/src/processes.cpp.obj CMakeFiles/tracelytics.dir/src/utils.cpp.obj -o tracelytics.wasm

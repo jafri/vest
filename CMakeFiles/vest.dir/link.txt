@@ -1,0 +1,1 @@
+/Users/jafri/eosio.cdt/build/bin/eosio-ld  CMakeFiles/vest.dir/src/vest.cpp.obj -o vest.wasm 
