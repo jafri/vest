@@ -14,6 +14,7 @@ CONTRACT vest : public contract {
     vest(name receiver, name code, datastream<const char*> ds):contract(receiver, code, ds) {}
 
     ACTION startvest (const extended_asset& deposit,
+                      const std::string& vestName,
                       const float& vestPerSecond,
                       const time_point& startTime,
                       const name& from,
@@ -23,6 +24,16 @@ CONTRACT vest : public contract {
 
     ACTION withdraw (const name& account,
                      const extended_asset& withdrawal);
+
+    ACTION clearall ();
+    template <typename T>
+    void cleanTable(){
+      T db(get_self(), get_self().value);
+      auto itr = db.end();
+      while(db.begin() != itr){
+        itr = db.erase(--itr);
+      }
+    }
 
     [[eosio::on_notify("*::transfer")]]
     void transfer( name from,
@@ -40,6 +51,7 @@ CONTRACT vest : public contract {
     };
     TABLE Vest {
       uint64_t id;
+      std::string vestName;
       extended_asset deposit;
       float vestPerSecond;
       float remainingVest;

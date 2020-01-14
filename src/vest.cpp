@@ -1,4 +1,10 @@
-#include "vest/vest.hpp"
+#include "./vest.hpp"
+
+void vest::clearall () {
+  require_auth(get_self());
+  cleanTable<vest_table>();
+  cleanTable<account_table>();
+}
 
 void vest::transfer (name from, name to, asset quantity, const std::string& memo) {
   auto self = get_self();
@@ -34,6 +40,7 @@ void vest::transfer (name from, name to, asset quantity, const std::string& memo
 
 void vest::startvest (
   const extended_asset& deposit,
+  const std::string& vestName,
   const float& vestPerSecond,
   const time_point& startTime,
   const name& from,
@@ -45,6 +52,7 @@ void vest::startvest (
   auto depositAmount = deposit.quantity.amount;
   extended_symbol depositSymbol = deposit.get_extended_symbol();
   check(depositAmount > 0, "quantity must be positive.");
+  check(vestPerSecond > 0, "vest per second must be positive.");
 
   // Substract balance
   account_table accounts(self, self.value);
@@ -55,11 +63,15 @@ void vest::startvest (
     check(a.balances[depositSymbol] >= depositAmount, "not enough deposited");
     a.balances[depositSymbol] -= depositAmount;
   });
+  if (account->balances.empty()) {
+    accounts.erase(account);
+  }
 
   // Add vest
   vest_table vests(get_self(), get_self().value);
   vests.emplace(get_self(), [&](auto& v) {
       v.id            = vests.available_primary_key();
+      v.vestName      = vestName;
       v.deposit       = deposit;
       v.vestPerSecond = vestPerSecond;
       v.remainingVest = static_cast<float>(depositAmount);
@@ -85,19 +97,24 @@ void vest::vestnow (
   check(vest->from == account || vest->to == account , "only the sender or receiver of vest can vest.");
 
   // How much to vest
-  auto elapsed = vest->lastVestTime.elapsed.count();
+  auto elapsed = current_time_point().sec_since_epoch() - vest->lastVestTime.sec_since_epoch();
+  check(elapsed > 0, "vesting has not started yet.");
   auto toVest = static_cast<float>(elapsed) * vest->vestPerSecond;
-  check(toVest > 0, "vest quantity must be positive.");
+  check(toVest > 1, "vest quantity must be positive.");
 
   // Reset to max
-  if (toVest > vest->remainingVest) {
+  if (toVest > vest->remainingVest || toVest - vest->remainingVest < 1) {
     toVest = vest->remainingVest;
   }
 
   vests.modify(vest, account, [&](auto& v) {
       v.remainingVest -= toVest;
-      v.lastVestTime   = eosio::current_time_point();
+      v.lastVestTime   = current_time_point();
   });
+
+  // Send it out
+  vest::transfer_action t_action( vest->deposit.contract, {self, "active"_n} );
+  t_action.send(self, vest->to, asset(toVest, vest->deposit.quantity.symbol) , std::string("Vested for vest ID: " + to_string(vest->id)));
 
   if (vest->remainingVest == 0) {
     vests.erase(vest);
