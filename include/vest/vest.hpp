@@ -11,16 +11,23 @@ using namespace std;
 CONTRACT vest : public contract {
   public:
     using contract::contract;
-    vest(name receiver, name code, datastream<const char*> ds):contract(receiver, code, ds) {}
+
+    vest( name receiver, name code, datastream<const char*> ds )
+      : contract(receiver, code, ds),
+        _vests(receiver, receiver.value),
+        _accounts(receiver, receiver.value) {}
 
     ACTION startvest (const extended_asset& deposit,
                       const std::string& vestName,
                       const float& vestPerSecond,
                       const time_point& startTime,
                       const name& from,
-                      const name& to);
-    ACTION vestnow (const uint64_t& id,
-                    const name& account);
+                      const name& to,
+                      const bool& cancellable);
+    ACTION claimvest (const uint64_t& id,
+                      const name& account);
+    ACTION cancelvest (const uint64_t& id,
+                       const name& account);
 
     ACTION withdraw (const name& account,
                      const extended_asset& withdrawal);
@@ -59,9 +66,12 @@ CONTRACT vest : public contract {
       time_point lastVestTime;
       name from;
       name to;
+      bool cancellable;
       uint64_t primary_key() const { return id; };
     };
-
     typedef multi_index<"account"_n, Account> account_table;
     typedef multi_index<"vest"_n, Vest> vest_table;
+
+    account_table _accounts;
+    vest_table _vests;
 };

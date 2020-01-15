@@ -1,4 +1,4 @@
-#include "./vest.hpp"
+#include "vest/vest.hpp"
 
 void vest::clearall () {
   require_auth(get_self());
@@ -17,21 +17,20 @@ void vest::transfer (name from, name to, asset quantity, const std::string& memo
   }
 
   if (to == self) {
-    account_table accounts(self, self.value);
-    auto account = accounts.find(from.value);
+    auto account = _accounts.find(from.value);
 
     // No account
-    if (account == accounts.end()) {
+    if (account == _accounts.end()) {
       std::map<extended_symbol, int64_t> balanceMap = {
         { asset_symbol, quantity.amount }
       };
-      accounts.emplace(self, [&](auto& a) {
+      _accounts.emplace(self, [&](auto& a) {
         a.account  = from;
         a.balances = balanceMap;
       });
     // Account exists
     } else {
-      accounts.modify(account, from, [&](auto& a) {
+      _accounts.modify(account, from, [&](auto& a) {
         a.balances[asset_symbol] += quantity.amount;
       });
     }
@@ -44,7 +43,8 @@ void vest::startvest (
   const float& vestPerSecond,
   const time_point& startTime,
   const name& from,
-  const name& to
+  const name& to,
+  const bool& cancellable
 ) {
   require_auth( from );
 
@@ -55,22 +55,20 @@ void vest::startvest (
   check(vestPerSecond > 0, "vest per second must be positive.");
 
   // Substract balance
-  account_table accounts(self, self.value);
-  auto account = accounts.find(from.value);
-  check(account != accounts.end(), "account does not exist");
+  auto account = _accounts.find(from.value);
+  check(account != _accounts.end(), "account does not exist");
 
-  accounts.modify(account, from, [&](auto& a) {
+  _accounts.modify(account, from, [&](auto& a) {
     check(a.balances[depositSymbol] >= depositAmount, "not enough deposited");
     a.balances[depositSymbol] -= depositAmount;
   });
   if (account->balances.empty()) {
-    accounts.erase(account);
+    _accounts.erase(account);
   }
 
   // Add vest
-  vest_table vests(get_self(), get_self().value);
-  vests.emplace(get_self(), [&](auto& v) {
-      v.id            = vests.available_primary_key();
+  _vests.emplace(get_self(), [&](auto& v) {
+      v.id            = _vests.available_primary_key();
       v.vestName      = vestName;
       v.deposit       = deposit;
       v.vestPerSecond = vestPerSecond;
@@ -79,21 +77,22 @@ void vest::startvest (
       v.lastVestTime  = startTime;
       v.from          = from;
       v.to            = to;
+      v.cancellable   = cancellable;
   });
 }
 
-void vest::vestnow (
+void vest::claimvest (
   const uint64_t& id,
   const name& account
 ) {
   require_auth( account );
 
+  // Constants
   auto self = get_self();
 
   // Substract account
-  vest_table vests(get_self(), get_self().value);
-  auto vest = vests.find(id);
-  check(vest != vests.end(), "no vest with ID " + to_string(id) + " found.");
+  auto vest = _vests.find(id);
+  check(vest != _vests.end(), "no vest with ID " + to_string(id) + " found.");
   check(vest->from == account || vest->to == account , "only the sender or receiver of vest can vest.");
 
   // How much to vest
@@ -107,7 +106,7 @@ void vest::vestnow (
     toVest = vest->remainingVest;
   }
 
-  vests.modify(vest, account, [&](auto& v) {
+  _vests.modify(vest, account, [&](auto& v) {
       v.remainingVest -= toVest;
       v.lastVestTime   = current_time_point();
   });
@@ -117,8 +116,32 @@ void vest::vestnow (
   t_action.send(self, vest->to, asset(toVest, vest->deposit.quantity.symbol) , std::string("Vested for vest ID: " + to_string(vest->id)));
 
   if (vest->remainingVest == 0) {
-    vests.erase(vest);
+    _vests.erase(vest);
   }
+}
+
+
+void vest::cancelvest (
+  const uint64_t& id,
+  const name& account
+) {
+  require_auth( account );
+
+  // Constants
+  auto self = get_self();
+
+  // Get vests
+  auto vest = _vests.find(id);
+  check(vest != _vests.end(), "no vest with ID " + to_string(id) + " found.");
+  check(vest->from == account || vest->to == account, "only the sender or receiver of vest can cancel vest.");
+  check(vest->cancellable, "vest is not cancellable.");
+
+  // Pay out
+  vest::transfer_action t_action( vest->deposit.contract, {self, "active"_n} );
+  t_action.send(self, vest->from, asset(vest->remainingVest, vest->deposit.quantity.symbol) , std::string("Cancelled Vest ID: " + to_string(vest->id)));
+
+  // Erase vest
+  _vests.erase(vest);
 }
 
 void vest::withdraw (
@@ -134,11 +157,10 @@ void vest::withdraw (
   check(withdrawalAmount > 0, "quantity must be positive.");
 
   // Substract account
-  account_table accounts(self, self.value);
-  auto account = accounts.find(to.value);
-  check(account != accounts.end(), "account does not have a balance.");
+  auto account = _accounts.find(to.value);
+  check(account != _accounts.end(), "account does not have a balance.");
 
-  accounts.modify(account, to, [&](auto& a) {
+  _accounts.modify(account, to, [&](auto& a) {
     check(a.balances[withdrawalSymbol] >= withdrawalAmount, "not enough deposited");
     a.balances[withdrawalSymbol] -= withdrawalAmount;
   });
@@ -149,6 +171,6 @@ void vest::withdraw (
 
   // If no balances left, delete account
   if (account->balances.empty()) {
-    accounts.erase(account);
+    _accounts.erase(account);
   }
 }

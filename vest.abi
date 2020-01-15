@@ -26,6 +26,10 @@
                     "type": "uint64"
                 },
                 {
+                    "name": "vestName",
+                    "type": "string"
+                },
+                {
                     "name": "deposit",
                     "type": "extended_asset"
                 },
@@ -52,8 +56,31 @@
                 {
                     "name": "to",
                     "type": "name"
+                },
+                {
+                    "name": "cancellable",
+                    "type": "bool"
                 }
             ]
+        },
+        {
+            "name": "cancelvest",
+            "base": "",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "uint64"
+                },
+                {
+                    "name": "account",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "clearall",
+            "base": "",
+            "fields": []
         },
         {
             "name": "extended_symbol",
@@ -92,6 +119,10 @@
                     "type": "extended_asset"
                 },
                 {
+                    "name": "vestName",
+                    "type": "string"
+                },
+                {
                     "name": "vestPerSecond",
                     "type": "float32"
                 },
@@ -106,6 +137,10 @@
                 {
                     "name": "to",
                     "type": "name"
+                },
+                {
+                    "name": "cancellable",
+                    "type": "bool"
                 }
             ]
         },
@@ -139,6 +174,16 @@
         }
     ],
     "actions": [
+        {
+            "name": "cancelvest",
+            "type": "cancelvest",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "clearall",
+            "type": "clearall",
+            "ricardian_contract": ""
+        },
         {
             "name": "startvest",
             "type": "startvest",
