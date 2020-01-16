@@ -32,10 +32,10 @@ CONTRACT vest : public contract {
                       const name& from,
                       const name& to,
                       const bool& cancellable);
-    ACTION claimvest (const name& vestName,
-                      const name& account);
-    ACTION cancelvest (const name& vestName,
-                       const name& account);
+    ACTION claimvest (const name& from,
+                      const name& vestName);
+    ACTION cancelvest (const name& from,
+                       const name& vestName);
 
     // Escrow
     ACTION startescrow (const extended_asset& deposit,

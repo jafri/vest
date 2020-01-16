@@ -122,11 +122,11 @@
             "base": "",
             "fields": [
                 {
-                    "name": "vestName",
+                    "name": "from",
                     "type": "name"
                 },
                 {
-                    "name": "account",
+                    "name": "vestName",
                     "type": "name"
                 }
             ]
@@ -136,11 +136,11 @@
             "base": "",
             "fields": [
                 {
-                    "name": "vestName",
+                    "name": "from",
                     "type": "name"
                 },
                 {
-                    "name": "account",
+                    "name": "vestName",
                     "type": "name"
                 }
             ]

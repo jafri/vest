@@ -32,7 +32,7 @@ void vest::startvest (
     check(vestPerSecond > 0, "vesting per second must be positive.");
 
     // Add vest
-    _vests.emplace(get_self(), [&](auto& v) {
+    _vests.emplace(from, [&](auto& v) {
         v.id            = _vests.available_primary_key();
         v.vestName      = vestName;
         v.deposit       = deposit;
@@ -58,16 +58,14 @@ void vest::startvest (
 }
 
 void vest::claimvest (
-  const name& vestName,
-  const name& account
+  const name& from,
+  const name& vestName
 ) {
-  require_auth( account );
-
-  // Substract account
+  // Validate vest
   auto vests_byfromandname = _vests.get_index<eosio::name("byfromname")>();
-  auto vest = vests_byfromandname.find((uint128_t{account.value}<<64) | vestName.value);
+  auto vest = vests_byfromandname.find((uint128_t{from.value}<<64) | vestName.value);
   check(vest != vests_byfromandname.end(), "no vest with ID " + vestName.to_string() + " found.");
-  check(vest->from == account || vest->to == account , "only the sender or receiver of vest can vest.");
+  check(has_auth(vest->from) || has_auth(vest->to), "only the sender or receiver of vest can claim vest.");
 
   // How much to vest
   auto elapsed = current_time_point().sec_since_epoch() - vest->lastVestTime.sec_since_epoch();
@@ -100,18 +98,15 @@ void vest::claimvest (
   }
 }
 
-
 void vest::cancelvest (
-  const name& vestName,
-  const name& account
+  const name& from,
+  const name& vestName
 ) {
-  require_auth( account );
-
   // Get vests
   auto vests_byfromandname = _vests.get_index<eosio::name("byfromname")>();
-  auto vest = vests_byfromandname.find((uint128_t{account.value}<<64) | vestName.value);
+  auto vest = vests_byfromandname.find((uint128_t{from.value}<<64) | vestName.value);
   check(vest != vests_byfromandname.end(), "no vest with ID " + vestName.to_string() + " found.");
-  check(vest->from == account || vest->to == account, "only the sender or receiver of vest can cancel vest.");
+  check(has_auth(vest->from) || has_auth(vest->to), "only the sender or receiver of vest can cancel vest.");
   check(vest->cancellable, "vest is not cancellable.");
 
   // Pay out
