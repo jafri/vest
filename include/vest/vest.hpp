@@ -26,15 +26,15 @@ CONTRACT vest : public contract {
 
     // Vest
     ACTION startvest (const extended_asset& deposit,
-                      const std::string& vestName,
+                      const name& vestName,
                       const time_point& startTime,
                       const time_point& endTime,
                       const name& from,
                       const name& to,
                       const bool& cancellable);
-    ACTION claimvest (const uint64_t& id,
+    ACTION claimvest (const name& vestName,
                       const name& account);
-    ACTION cancelvest (const uint64_t& id,
+    ACTION cancelvest (const name& vestName,
                        const name& account);
 
     // Escrow
@@ -79,7 +79,7 @@ CONTRACT vest : public contract {
     };
     TABLE Vest {
       uint64_t id;
-      std::string vestName;
+      name vestName;
       extended_asset deposit;
       float vestPerSecond;
       float remainingVest;
@@ -90,6 +90,7 @@ CONTRACT vest : public contract {
       name to;
       bool cancellable;
       uint64_t primary_key() const { return id; };
+      uint128_t by_from_and_vest_name() const { return (uint128_t{from.value}<<64) | vestName.value; };
     };
     TABLE Escrow {
       uint64_t id;
@@ -106,7 +107,9 @@ CONTRACT vest : public contract {
       uint64_t primary_key() const { return id; };
     };
     typedef multi_index<"account"_n, Account> account_table;
-    typedef multi_index<"vest"_n, Vest> vest_table;
+    typedef multi_index<eosio::name("vest"), Vest,
+      indexed_by<name("byfromname"), const_mem_fun<Vest, uint128_t, &Vest::by_from_and_vest_name>>
+    > vest_table;
     typedef multi_index<"escrow"_n, Escrow> escrow_table;
 
     account_table _accounts;

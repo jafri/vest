@@ -2,7 +2,7 @@
 
 void vest::startvest (
   const extended_asset& deposit,
-  const std::string& vestName,
+  const name& vestName,
   const time_point& startTime,
   const time_point& endTime,
   const name& from,
@@ -12,44 +12,61 @@ void vest::startvest (
   require_auth( from );
 
   auto depositAmount = deposit.quantity.amount;
-  extended_symbol depositSymbol = deposit.get_extended_symbol();
   check(depositAmount > 0, "quantity must be positive.");
+  float remainingVest = static_cast<float>(depositAmount);
+  extended_symbol depositSymbol = deposit.get_extended_symbol();
 
   // Substract balance
   subbalance(from, depositSymbol, depositAmount);
 
-  // Vest per second
-  float remainingVest = static_cast<float>(depositAmount);
-  auto timespan = static_cast<float>(endTime.sec_since_epoch() - startTime.sec_since_epoch());
-  check(timespan > 0, "end time must be after start time.");
-  float vestPerSecond = remainingVest / timespan;
-  check(vestPerSecond > 0, "vesting per second must be positive.");
+  // Find Vest
+  auto vests_byfromandname = _vests.get_index<eosio::name("byfromname")>();
+  auto vest = vests_byfromandname.find((uint128_t{from.value}<<64) | vestName.value);
 
-  // Add vest
-  _vests.emplace(get_self(), [&](auto& v) {
-      v.id            = _vests.available_primary_key();
-      v.vestName      = vestName;
-      v.deposit       = deposit;
-      v.vestPerSecond = vestPerSecond;
-      v.remainingVest = remainingVest;
-      v.startTime     = startTime;
-      v.endTime       = endTime;
-      v.lastVestTime  = startTime;
-      v.from          = from;
-      v.to            = to;
-      v.cancellable   = cancellable;
-  });
+  // Vest does not exist
+  if (vest == vests_byfromandname.end()) {
+    // Vest per second
+    auto timespan = static_cast<float>(endTime.sec_since_epoch() - startTime.sec_since_epoch());
+    check(timespan > 0, "end time must be after start time.");
+    float vestPerSecond = remainingVest / timespan;
+    check(vestPerSecond > 0, "vesting per second must be positive.");
+
+    // Add vest
+    _vests.emplace(get_self(), [&](auto& v) {
+        v.id            = _vests.available_primary_key();
+        v.vestName      = vestName;
+        v.deposit       = deposit;
+        v.vestPerSecond = vestPerSecond;
+        v.remainingVest = remainingVest;
+        v.startTime     = startTime;
+        v.endTime       = endTime;
+        v.lastVestTime  = startTime;
+        v.from          = from;
+        v.to            = to;
+        v.cancellable   = cancellable;
+    });
+
+  // Vest already exists 
+  } else {
+    auto timeIncrease = static_cast<uint64_t>(depositAmount / vest->vestPerSecond);
+    vests_byfromandname.modify(vest, same_payer, [&](auto& v) {
+        v.deposit.quantity.amount += depositAmount;
+        v.remainingVest           += remainingVest;
+        v.endTime                 += eosio::microseconds(timeIncrease * 1000000);
+    });
+  }
 }
 
 void vest::claimvest (
-  const uint64_t& id,
+  const name& vestName,
   const name& account
 ) {
   require_auth( account );
 
   // Substract account
-  auto vest = _vests.find(id);
-  check(vest != _vests.end(), "no vest with ID " + to_string(id) + " found.");
+  auto vests_byfromandname = _vests.get_index<eosio::name("byfromname")>();
+  auto vest = vests_byfromandname.find((uint128_t{account.value}<<64) | vestName.value);
+  check(vest != vests_byfromandname.end(), "no vest with ID " + vestName.to_string() + " found.");
   check(vest->from == account || vest->to == account , "only the sender or receiver of vest can vest.");
 
   // How much to vest
@@ -65,7 +82,7 @@ void vest::claimvest (
   }
 
   // Set remaining vest
-  _vests.modify(vest, same_payer, [&](auto& v) {
+  vests_byfromandname.modify(vest, same_payer, [&](auto& v) {
       v.remainingVest -= toVest;
       v.lastVestTime   = current_time_point();
   });
@@ -75,24 +92,25 @@ void vest::claimvest (
     vest->deposit.contract,
     vest->to,
     asset(toVest, vest->deposit.quantity.symbol),
-    std::string("Vested for vest ID: " + to_string(vest->id))
+    std::string("Vested for vest ID: " + vest->vestName.to_string())
   );
 
   if (vest->remainingVest == 0) {
-    _vests.erase(vest);
+    vests_byfromandname.erase(vest);
   }
 }
 
 
 void vest::cancelvest (
-  const uint64_t& id,
+  const name& vestName,
   const name& account
 ) {
   require_auth( account );
 
   // Get vests
-  auto vest = _vests.find(id);
-  check(vest != _vests.end(), "no vest with ID " + to_string(id) + " found.");
+  auto vests_byfromandname = _vests.get_index<eosio::name("byfromname")>();
+  auto vest = vests_byfromandname.find((uint128_t{account.value}<<64) | vestName.value);
+  check(vest != vests_byfromandname.end(), "no vest with ID " + vestName.to_string() + " found.");
   check(vest->from == account || vest->to == account, "only the sender or receiver of vest can cancel vest.");
   check(vest->cancellable, "vest is not cancellable.");
 
@@ -101,9 +119,9 @@ void vest::cancelvest (
     vest->deposit.contract,
     vest->from,
     asset(vest->remainingVest, vest->deposit.quantity.symbol),
-    std::string("Cancelled Vest ID: " + to_string(vest->id))
+    std::string("Cancelled Vest ID: " + vest->vestName.to_string())
   );
 
   // Erase vest
-  _vests.erase(vest);
+  vests_byfromandname.erase(vest);
 }

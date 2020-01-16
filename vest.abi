@@ -77,7 +77,7 @@
                 },
                 {
                     "name": "vestName",
-                    "type": "string"
+                    "type": "name"
                 },
                 {
                     "name": "deposit",
@@ -122,8 +122,8 @@
             "base": "",
             "fields": [
                 {
-                    "name": "id",
-                    "type": "uint64"
+                    "name": "vestName",
+                    "type": "name"
                 },
                 {
                     "name": "account",
@@ -136,8 +136,8 @@
             "base": "",
             "fields": [
                 {
-                    "name": "id",
-                    "type": "uint64"
+                    "name": "vestName",
+                    "type": "name"
                 },
                 {
                     "name": "account",
@@ -232,7 +232,7 @@
                 },
                 {
                     "name": "vestName",
-                    "type": "string"
+                    "type": "name"
                 },
                 {
                     "name": "startTime",
