@@ -18,7 +18,7 @@ void vest::startvest (
   extended_symbol depositSymbol = deposit.get_extended_symbol();
 
   // Substract balance
-  subbalance(from, depositSymbol, depositAmount);
+  sub_balance(from, depositSymbol, depositAmount);
 
   // Find Vest
   auto vests_byfromandname = _vests.get_index<eosio::name("byfromname")>();
@@ -47,7 +47,7 @@ void vest::startvest (
         v.cancellable   = cancellable;
     });
 
-  // Vest already exists 
+  // Vest already exists
   } else {
     auto timeIncrease = static_cast<uint64_t>(depositAmount / vest->vestPerSecond);
     vests_byfromandname.modify(vest, same_payer, [&](auto& v) {

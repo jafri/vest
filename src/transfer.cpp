@@ -21,7 +21,7 @@ void vest::transfer (name from, name to, asset quantity, const std::string& memo
 
   // Receive balance
   if (to == get_self()) {
-    addbalance(from, asset_symbol, quantity.amount);
+    add_balance(from, asset_symbol, quantity.amount);
   }
 }
 
@@ -37,7 +37,7 @@ void vest::withdraw (
   check(withdrawalAmount > 0, "quantity must be positive.");
 
   // Substract account
-  subbalance(to, withdrawalSymbol, withdrawalAmount);
+  sub_balance(to, withdrawalSymbol, withdrawalAmount);
 
   // Withdraw
   send(
@@ -48,11 +48,11 @@ void vest::withdraw (
   );
 }
 
-void vest::addbalance (
+void vest::add_balance (
   const name& user,
   const extended_symbol& symbolAndAccount,
   const uint64_t& amount
-) { 
+) {
   auto account = _accounts.find(user.value);
 
   // No account.
@@ -72,7 +72,7 @@ void vest::addbalance (
   }
 }
 
-void vest::subbalance (
+void vest::sub_balance (
   const name& user,
   const extended_symbol& symbolAndAccount,
   const uint64_t& amount

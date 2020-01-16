@@ -22,11 +22,11 @@ void vest::startescrow (
   }
 
   // Substract balance
-  subbalance(from, depositSymbol, depositAmount);
+  sub_balance(from, depositSymbol, depositAmount);
 
   // Add escrow
   _escrows.emplace(from, [&](auto& e) {
-      e.id             = _vests.available_primary_key();
+      e.id             = _escrows.available_primary_key();
       e.deposit        = deposit;
       e.escrowName     = escrowName;
       e.votesRequired  = votesRequired;

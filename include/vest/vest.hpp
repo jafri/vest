@@ -58,7 +58,13 @@ CONTRACT vest : public contract {
                    asset quantity,
                    const std::string& memo );
 
-    using transfer_action = action_wrapper<"transfer"_n, &vest::transfer>;
+    using startvest_action   = action_wrapper<"startvest"_n,   &vest::startvest>;
+    using claimvest_action   = action_wrapper<"claimvest"_n,   &vest::claimvest>;
+    using cancelvest_action  = action_wrapper<"cancelvest"_n,  &vest::cancelvest>;
+    using startescrow_action = action_wrapper<"startescrow"_n, &vest::startescrow>;
+    using voteescrow_action  = action_wrapper<"voteescrow"_n,  &vest::voteescrow>;
+    using withdraw_action    = action_wrapper<"withdraw"_n,    &vest::withdraw>;
+    using transfer_action    = action_wrapper<"transfer"_n,    &vest::transfer>;
 
     // Utils
     ACTION clearall ();
@@ -71,7 +77,6 @@ CONTRACT vest : public contract {
       }
     }
 
-  private:
     TABLE Account {
       name account;
       std::map<extended_symbol, int64_t> balances;
@@ -116,12 +121,13 @@ CONTRACT vest : public contract {
     vest_table _vests;
     escrow_table _escrows;
 
-    void subbalance (
+  private:
+    void sub_balance (
       const name& user,
       const extended_symbol& symbolAndAccount,
       const uint64_t& amount
     );
-    void addbalance (
+    void add_balance (
       const name& user,
       const extended_symbol& symbolAndAccount,
       const uint64_t& amount
