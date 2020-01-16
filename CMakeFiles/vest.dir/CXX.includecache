@@ -6,18 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/Users/jafri/eosio.contracts/contracts/vest/src/escrow.cpp
-vest/vest.hpp
-/Users/jafri/eosio.contracts/contracts/vest/src/vest/vest.hpp
-
-/Users/jafri/eosio.contracts/contracts/vest/src/transfer.cpp
-vest/vest.hpp
-/Users/jafri/eosio.contracts/contracts/vest/src/vest/vest.hpp
-
-/Users/jafri/eosio.contracts/contracts/vest/src/utils.cpp
-vest/vest.hpp
-/Users/jafri/eosio.contracts/contracts/vest/src/vest/vest.hpp
-
 /Users/jafri/eosio.contracts/contracts/vest/src/vest.cpp
 vest/vest.hpp
 /Users/jafri/eosio.contracts/contracts/vest/src/vest/vest.hpp

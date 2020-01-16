@@ -31,11 +31,11 @@ CONTRACT vest : public contract {
                       const time_point& endTime,
                       const name& from,
                       const name& to,
-                      const bool& cancellable);
+                      const bool& stoppable);
     ACTION claimvest (const name& from,
                       const name& vestName);
-    ACTION cancelvest (const name& from,
-                       const name& vestName);
+    ACTION stopvest  (const name& from,
+                      const name& vestName);
 
     // Escrow
     ACTION startescrow (const extended_asset& deposit,
@@ -60,7 +60,7 @@ CONTRACT vest : public contract {
 
     using startvest_action   = action_wrapper<"startvest"_n,   &vest::startvest>;
     using claimvest_action   = action_wrapper<"claimvest"_n,   &vest::claimvest>;
-    using cancelvest_action  = action_wrapper<"cancelvest"_n,  &vest::cancelvest>;
+    using stopvest_action    = action_wrapper<"stopvest"_n,  &vest::stopvest>;
     using startescrow_action = action_wrapper<"startescrow"_n, &vest::startescrow>;
     using voteescrow_action  = action_wrapper<"voteescrow"_n,  &vest::voteescrow>;
     using withdraw_action    = action_wrapper<"withdraw"_n,    &vest::withdraw>;
@@ -93,7 +93,7 @@ CONTRACT vest : public contract {
       time_point lastVestTime;
       name from;
       name to;
-      bool cancellable;
+      bool stoppable;
       uint64_t primary_key() const { return id; };
       uint128_t by_from_and_vest_name() const { return (uint128_t{from.value}<<64) | vestName.value; };
     };
@@ -132,11 +132,15 @@ CONTRACT vest : public contract {
       const extended_symbol& symbolAndAccount,
       const uint64_t& amount
     );
-
     void send (
       const name& contract,
       const name& to,
       const asset& quantity,
       const std::string& memo
+    );
+    void _claimvest (
+      const name& from,
+      const name& vestName,
+      const bool& internal
     );
 };

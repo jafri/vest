@@ -112,22 +112,8 @@
                     "type": "name"
                 },
                 {
-                    "name": "cancellable",
+                    "name": "stoppable",
                     "type": "bool"
-                }
-            ]
-        },
-        {
-            "name": "cancelvest",
-            "base": "",
-            "fields": [
-                {
-                    "name": "from",
-                    "type": "name"
-                },
-                {
-                    "name": "vestName",
-                    "type": "name"
                 }
             ]
         },
@@ -251,8 +237,22 @@
                     "type": "name"
                 },
                 {
-                    "name": "cancellable",
+                    "name": "stoppable",
                     "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "stopvest",
+            "base": "",
+            "fields": [
+                {
+                    "name": "from",
+                    "type": "name"
+                },
+                {
+                    "name": "vestName",
+                    "type": "name"
                 }
             ]
         },
@@ -291,11 +291,6 @@
     ],
     "actions": [
         {
-            "name": "cancelvest",
-            "type": "cancelvest",
-            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Cancel Vest\nsummary: 'Cancel Vest'\nicon:\n---"
-        },
-        {
             "name": "claimvest",
             "type": "claimvest",
             "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Claim Vest\nsummary: 'Claim Vest'\nicon:\n---"
@@ -308,12 +303,17 @@
         {
             "name": "startescrow",
             "type": "startescrow",
-            "ricardian_contract": ""
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Start Escrow\nsummary: 'Start Escrow'\nicon:\n---"
         },
         {
             "name": "startvest",
             "type": "startvest",
             "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Start Vesting\nsummary: 'Start Vesting'\nicon:\n---"
+        },
+        {
+            "name": "stopvest",
+            "type": "stopvest",
+            "ricardian_contract": ""
         },
         {
             "name": "voteescrow",

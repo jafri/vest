@@ -7,7 +7,7 @@ void vest::startvest (
   const time_point& endTime,
   const name& from,
   const name& to,
-  const bool& cancellable
+  const bool& stoppable
 ) {
   require_auth( from );
   check(is_account(from) && is_account(to), "sending or receiving account does not exist.");
@@ -44,7 +44,7 @@ void vest::startvest (
         v.lastVestTime  = startTime;
         v.from          = from;
         v.to            = to;
-        v.cancellable   = cancellable;
+        v.stoppable     = stoppable;
     });
 
   // Vest already exists
@@ -73,7 +73,6 @@ void vest::claimvest (
   check(elapsed > 0, "vesting has not started yet.");
   auto toVest = static_cast<float>(elapsed) * vest->vestPerSecond;
   check(toVest > 1, "vest quantity must be positive.");
-  check(vest->remainingVest > toVest, "cannot vest more than remaining.");
 
   // Reset to max
   if (toVest > vest->remainingVest || vest->remainingVest - toVest < 1) {
@@ -99,7 +98,7 @@ void vest::claimvest (
   }
 }
 
-void vest::cancelvest (
+void vest::stopvest (
   const name& from,
   const name& vestName
 ) {
@@ -107,17 +106,36 @@ void vest::cancelvest (
   auto vests_byfromandname = _vests.get_index<eosio::name("byfromname")>();
   auto vest = vests_byfromandname.find((uint128_t{from.value}<<64) | vestName.value);
   check(vest != vests_byfromandname.end(), "no vest with ID " + vestName.to_string() + " found.");
-  check(has_auth(vest->from) || has_auth(vest->to), "only the sender or receiver of vest can cancel vest.");
-  check(vest->cancellable, "vest is not cancellable.");
+  check(has_auth(vest->from) || has_auth(vest->to), "only the sender or receiver of vest can stop the vest.");
+  check(vest->stoppable, "vest is not stoppable.");
 
-  // Pay out
+  // How much to vest
+  auto elapsed = current_time_point().sec_since_epoch() - vest->lastVestTime.sec_since_epoch();
+  check(elapsed > 0, "vesting has not started yet.");
+  auto toVest = static_cast<float>(elapsed) * vest->vestPerSecond;
+
+  // How much is refunded
+  auto refundAmount = vest->remainingVest - toVest;
+  check(refundAmount > 1, "refund quantity must be positive.");
+  if (refundAmount > vest->remainingVest || vest->remainingVest - refundAmount < 1) {
+    refundAmount = vest->remainingVest;
+  }
+  
+  // Set remaining vest
+  vests_byfromandname.modify(vest, same_payer, [&](auto& v) {
+    v.remainingVest -= refundAmount;
+    v.endTime        = current_time_point();
+  });
+
+  // Pay out refund
   send(
     vest->deposit.contract,
     vest->from,
-    asset(vest->remainingVest, vest->deposit.quantity.symbol),
-    std::string("Cancelled Vest ID: " + vest->vestName.to_string())
+    asset(refundAmount, vest->deposit.quantity.symbol),
+    std::string("Stopped Vest ID: " + vest->vestName.to_string())
   );
 
-  // Erase vest
-  vests_byfromandname.erase(vest);
+  if (vest->remainingVest == 0) {
+    vests_byfromandname.erase(vest);
+  }
 }
