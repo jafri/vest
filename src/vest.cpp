@@ -10,6 +10,7 @@ void vest::startvest (
   const bool& cancellable
 ) {
   require_auth( from );
+  check(is_account(from) && is_account(to), "sending or receiving account does not exist.");
 
   auto depositAmount = deposit.quantity.amount;
   check(depositAmount > 0, "quantity must be positive.");
@@ -29,7 +30,7 @@ void vest::startvest (
     auto timespan = static_cast<float>(endTime.sec_since_epoch() - startTime.sec_since_epoch());
     check(timespan > 0, "end time must be after start time.");
     float vestPerSecond = remainingVest / timespan;
-    check(vestPerSecond > 0, "vesting per second must be positive.");
+    check(vestPerSecond > 0, "vesting per second must be positive");
 
     // Add vest
     _vests.emplace(from, [&](auto& v) {

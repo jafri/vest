@@ -55,7 +55,7 @@ void vest::addbalance (
 ) { 
   auto account = _accounts.find(user.value);
 
-  // No account
+  // No account.
   if (account == _accounts.end()) {
     std::map<extended_symbol, int64_t> balanceMap = {
       { symbolAndAccount, amount }
