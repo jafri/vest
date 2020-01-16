@@ -57,9 +57,48 @@ include vest/CMakeFiles/vest.dir/progress.make
 # Include the compile flags for this target's objects.
 include vest/CMakeFiles/vest.dir/flags.make
 
+vest/CMakeFiles/vest.dir/src/escrow.cpp.obj: vest/CMakeFiles/vest.dir/flags.make
+vest/CMakeFiles/vest.dir/src/escrow.cpp.obj: vest/src/escrow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jafri/eosio.contracts/contracts/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object vest/CMakeFiles/vest.dir/src/escrow.cpp.obj"
+	cd /Users/jafri/eosio.contracts/contracts/vest && /Users/jafri/eosio.cdt/build/bin/eosio-cpp  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vest.dir/src/escrow.cpp.obj -c /Users/jafri/eosio.contracts/contracts/vest/src/escrow.cpp
+
+vest/CMakeFiles/vest.dir/src/escrow.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vest.dir/src/escrow.cpp.i"
+	cd /Users/jafri/eosio.contracts/contracts/vest && /Users/jafri/eosio.cdt/build/bin/eosio-cpp $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/jafri/eosio.contracts/contracts/vest/src/escrow.cpp > CMakeFiles/vest.dir/src/escrow.cpp.i
+
+vest/CMakeFiles/vest.dir/src/escrow.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vest.dir/src/escrow.cpp.s"
+	cd /Users/jafri/eosio.contracts/contracts/vest && /Users/jafri/eosio.cdt/build/bin/eosio-cpp $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/jafri/eosio.contracts/contracts/vest/src/escrow.cpp -o CMakeFiles/vest.dir/src/escrow.cpp.s
+
+vest/CMakeFiles/vest.dir/src/transfer.cpp.obj: vest/CMakeFiles/vest.dir/flags.make
+vest/CMakeFiles/vest.dir/src/transfer.cpp.obj: vest/src/transfer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jafri/eosio.contracts/contracts/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object vest/CMakeFiles/vest.dir/src/transfer.cpp.obj"
+	cd /Users/jafri/eosio.contracts/contracts/vest && /Users/jafri/eosio.cdt/build/bin/eosio-cpp  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vest.dir/src/transfer.cpp.obj -c /Users/jafri/eosio.contracts/contracts/vest/src/transfer.cpp
+
+vest/CMakeFiles/vest.dir/src/transfer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vest.dir/src/transfer.cpp.i"
+	cd /Users/jafri/eosio.contracts/contracts/vest && /Users/jafri/eosio.cdt/build/bin/eosio-cpp $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/jafri/eosio.contracts/contracts/vest/src/transfer.cpp > CMakeFiles/vest.dir/src/transfer.cpp.i
+
+vest/CMakeFiles/vest.dir/src/transfer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vest.dir/src/transfer.cpp.s"
+	cd /Users/jafri/eosio.contracts/contracts/vest && /Users/jafri/eosio.cdt/build/bin/eosio-cpp $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/jafri/eosio.contracts/contracts/vest/src/transfer.cpp -o CMakeFiles/vest.dir/src/transfer.cpp.s
+
+vest/CMakeFiles/vest.dir/src/utils.cpp.obj: vest/CMakeFiles/vest.dir/flags.make
+vest/CMakeFiles/vest.dir/src/utils.cpp.obj: vest/src/utils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jafri/eosio.contracts/contracts/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object vest/CMakeFiles/vest.dir/src/utils.cpp.obj"
+	cd /Users/jafri/eosio.contracts/contracts/vest && /Users/jafri/eosio.cdt/build/bin/eosio-cpp  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vest.dir/src/utils.cpp.obj -c /Users/jafri/eosio.contracts/contracts/vest/src/utils.cpp
+
+vest/CMakeFiles/vest.dir/src/utils.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vest.dir/src/utils.cpp.i"
+	cd /Users/jafri/eosio.contracts/contracts/vest && /Users/jafri/eosio.cdt/build/bin/eosio-cpp $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/jafri/eosio.contracts/contracts/vest/src/utils.cpp > CMakeFiles/vest.dir/src/utils.cpp.i
+
+vest/CMakeFiles/vest.dir/src/utils.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vest.dir/src/utils.cpp.s"
+	cd /Users/jafri/eosio.contracts/contracts/vest && /Users/jafri/eosio.cdt/build/bin/eosio-cpp $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/jafri/eosio.contracts/contracts/vest/src/utils.cpp -o CMakeFiles/vest.dir/src/utils.cpp.s
+
 vest/CMakeFiles/vest.dir/src/vest.cpp.obj: vest/CMakeFiles/vest.dir/flags.make
 vest/CMakeFiles/vest.dir/src/vest.cpp.obj: vest/src/vest.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jafri/eosio.contracts/contracts/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object vest/CMakeFiles/vest.dir/src/vest.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jafri/eosio.contracts/contracts/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object vest/CMakeFiles/vest.dir/src/vest.cpp.obj"
 	cd /Users/jafri/eosio.contracts/contracts/vest && /Users/jafri/eosio.cdt/build/bin/eosio-cpp  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vest.dir/src/vest.cpp.obj -c /Users/jafri/eosio.contracts/contracts/vest/src/vest.cpp
 
 vest/CMakeFiles/vest.dir/src/vest.cpp.i: cmake_force
@@ -72,15 +111,21 @@ vest/CMakeFiles/vest.dir/src/vest.cpp.s: cmake_force
 
 # Object files for target vest
 vest_OBJECTS = \
+"CMakeFiles/vest.dir/src/escrow.cpp.obj" \
+"CMakeFiles/vest.dir/src/transfer.cpp.obj" \
+"CMakeFiles/vest.dir/src/utils.cpp.obj" \
 "CMakeFiles/vest.dir/src/vest.cpp.obj"
 
 # External object files for target vest
 vest_EXTERNAL_OBJECTS =
 
+vest/vest.wasm: vest/CMakeFiles/vest.dir/src/escrow.cpp.obj
+vest/vest.wasm: vest/CMakeFiles/vest.dir/src/transfer.cpp.obj
+vest/vest.wasm: vest/CMakeFiles/vest.dir/src/utils.cpp.obj
 vest/vest.wasm: vest/CMakeFiles/vest.dir/src/vest.cpp.obj
 vest/vest.wasm: vest/CMakeFiles/vest.dir/build.make
 vest/vest.wasm: vest/CMakeFiles/vest.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/jafri/eosio.contracts/contracts/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable vest.wasm"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/jafri/eosio.contracts/contracts/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable vest.wasm"
 	cd /Users/jafri/eosio.contracts/contracts/vest && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/vest.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

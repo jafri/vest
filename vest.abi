@@ -18,6 +18,56 @@
             ]
         },
         {
+            "name": "Escrow",
+            "base": "",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "uint64"
+                },
+                {
+                    "name": "escrowName",
+                    "type": "string"
+                },
+                {
+                    "name": "deposit",
+                    "type": "extended_asset"
+                },
+                {
+                    "name": "votesRequired",
+                    "type": "pair_name_int32[]"
+                },
+                {
+                    "name": "approvalsProvided",
+                    "type": "pair_name_int32[]"
+                },
+                {
+                    "name": "rejectionsProvided",
+                    "type": "pair_name_int32[]"
+                },
+                {
+                    "name": "requiredWeight",
+                    "type": "int32"
+                },
+                {
+                    "name": "approvalsWeight",
+                    "type": "int32"
+                },
+                {
+                    "name": "rejectionsWeight",
+                    "type": "int32"
+                },
+                {
+                    "name": "from",
+                    "type": "name"
+                },
+                {
+                    "name": "to",
+                    "type": "name"
+                }
+            ]
+        },
+        {
             "name": "Vest",
             "base": "",
             "fields": [
@@ -46,6 +96,10 @@
                     "type": "time_point"
                 },
                 {
+                    "name": "endTime",
+                    "type": "time_point"
+                },
+                {
                     "name": "lastVestTime",
                     "type": "time_point"
                 },
@@ -65,6 +119,20 @@
         },
         {
             "name": "cancelvest",
+            "base": "",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "uint64"
+                },
+                {
+                    "name": "account",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "claimvest",
             "base": "",
             "fields": [
                 {
@@ -111,6 +179,50 @@
             ]
         },
         {
+            "name": "pair_name_int32",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "name"
+                },
+                {
+                    "name": "value",
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "name": "startescrow",
+            "base": "",
+            "fields": [
+                {
+                    "name": "deposit",
+                    "type": "extended_asset"
+                },
+                {
+                    "name": "escrowName",
+                    "type": "string"
+                },
+                {
+                    "name": "votesRequired",
+                    "type": "pair_name_int32[]"
+                },
+                {
+                    "name": "requiredWeight",
+                    "type": "int32"
+                },
+                {
+                    "name": "from",
+                    "type": "name"
+                },
+                {
+                    "name": "to",
+                    "type": "name"
+                }
+            ]
+        },
+        {
             "name": "startvest",
             "base": "",
             "fields": [
@@ -123,11 +235,11 @@
                     "type": "string"
                 },
                 {
-                    "name": "vestPerSecond",
-                    "type": "float32"
+                    "name": "startTime",
+                    "type": "time_point"
                 },
                 {
-                    "name": "startTime",
+                    "name": "endTime",
                     "type": "time_point"
                 },
                 {
@@ -145,7 +257,7 @@
             ]
         },
         {
-            "name": "vestnow",
+            "name": "voteescrow",
             "base": "",
             "fields": [
                 {
@@ -155,6 +267,10 @@
                 {
                     "name": "account",
                     "type": "name"
+                },
+                {
+                    "name": "approveOrReject",
+                    "type": "string"
                 }
             ]
         },
@@ -180,8 +296,18 @@
             "ricardian_contract": ""
         },
         {
+            "name": "claimvest",
+            "type": "claimvest",
+            "ricardian_contract": ""
+        },
+        {
             "name": "clearall",
             "type": "clearall",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "startescrow",
+            "type": "startescrow",
             "ricardian_contract": ""
         },
         {
@@ -190,8 +316,8 @@
             "ricardian_contract": ""
         },
         {
-            "name": "vestnow",
-            "type": "vestnow",
+            "name": "voteescrow",
+            "type": "voteescrow",
             "ricardian_contract": ""
         },
         {
@@ -204,6 +330,13 @@
         {
             "name": "account",
             "type": "Account",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "escrow",
+            "type": "Escrow",
             "index_type": "i64",
             "key_names": [],
             "key_types": []

@@ -1,4 +1,7 @@
 add_contract(vest vest
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/escrow.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/transfer.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/src/vest.cpp
 )
 

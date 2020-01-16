@@ -125,6 +125,87 @@ vest/fast:
 	cd /Users/jafri/eosio.contracts/contracts && $(MAKE) -f vest/CMakeFiles/vest.dir/build.make vest/CMakeFiles/vest.dir/build
 .PHONY : vest/fast
 
+src/escrow.obj: src/escrow.cpp.obj
+
+.PHONY : src/escrow.obj
+
+# target to build an object file
+src/escrow.cpp.obj:
+	cd /Users/jafri/eosio.contracts/contracts && $(MAKE) -f vest/CMakeFiles/vest.dir/build.make vest/CMakeFiles/vest.dir/src/escrow.cpp.obj
+.PHONY : src/escrow.cpp.obj
+
+src/escrow.i: src/escrow.cpp.i
+
+.PHONY : src/escrow.i
+
+# target to preprocess a source file
+src/escrow.cpp.i:
+	cd /Users/jafri/eosio.contracts/contracts && $(MAKE) -f vest/CMakeFiles/vest.dir/build.make vest/CMakeFiles/vest.dir/src/escrow.cpp.i
+.PHONY : src/escrow.cpp.i
+
+src/escrow.s: src/escrow.cpp.s
+
+.PHONY : src/escrow.s
+
+# target to generate assembly for a file
+src/escrow.cpp.s:
+	cd /Users/jafri/eosio.contracts/contracts && $(MAKE) -f vest/CMakeFiles/vest.dir/build.make vest/CMakeFiles/vest.dir/src/escrow.cpp.s
+.PHONY : src/escrow.cpp.s
+
+src/transfer.obj: src/transfer.cpp.obj
+
+.PHONY : src/transfer.obj
+
+# target to build an object file
+src/transfer.cpp.obj:
+	cd /Users/jafri/eosio.contracts/contracts && $(MAKE) -f vest/CMakeFiles/vest.dir/build.make vest/CMakeFiles/vest.dir/src/transfer.cpp.obj
+.PHONY : src/transfer.cpp.obj
+
+src/transfer.i: src/transfer.cpp.i
+
+.PHONY : src/transfer.i
+
+# target to preprocess a source file
+src/transfer.cpp.i:
+	cd /Users/jafri/eosio.contracts/contracts && $(MAKE) -f vest/CMakeFiles/vest.dir/build.make vest/CMakeFiles/vest.dir/src/transfer.cpp.i
+.PHONY : src/transfer.cpp.i
+
+src/transfer.s: src/transfer.cpp.s
+
+.PHONY : src/transfer.s
+
+# target to generate assembly for a file
+src/transfer.cpp.s:
+	cd /Users/jafri/eosio.contracts/contracts && $(MAKE) -f vest/CMakeFiles/vest.dir/build.make vest/CMakeFiles/vest.dir/src/transfer.cpp.s
+.PHONY : src/transfer.cpp.s
+
+src/utils.obj: src/utils.cpp.obj
+
+.PHONY : src/utils.obj
+
+# target to build an object file
+src/utils.cpp.obj:
+	cd /Users/jafri/eosio.contracts/contracts && $(MAKE) -f vest/CMakeFiles/vest.dir/build.make vest/CMakeFiles/vest.dir/src/utils.cpp.obj
+.PHONY : src/utils.cpp.obj
+
+src/utils.i: src/utils.cpp.i
+
+.PHONY : src/utils.i
+
+# target to preprocess a source file
+src/utils.cpp.i:
+	cd /Users/jafri/eosio.contracts/contracts && $(MAKE) -f vest/CMakeFiles/vest.dir/build.make vest/CMakeFiles/vest.dir/src/utils.cpp.i
+.PHONY : src/utils.cpp.i
+
+src/utils.s: src/utils.cpp.s
+
+.PHONY : src/utils.s
+
+# target to generate assembly for a file
+src/utils.cpp.s:
+	cd /Users/jafri/eosio.contracts/contracts && $(MAKE) -f vest/CMakeFiles/vest.dir/build.make vest/CMakeFiles/vest.dir/src/utils.cpp.s
+.PHONY : src/utils.cpp.s
+
 src/vest.obj: src/vest.cpp.obj
 
 .PHONY : src/vest.obj
@@ -161,6 +242,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... vest"
+	@echo "... src/escrow.obj"
+	@echo "... src/escrow.i"
+	@echo "... src/escrow.s"
+	@echo "... src/transfer.obj"
+	@echo "... src/transfer.i"
+	@echo "... src/transfer.s"
+	@echo "... src/utils.obj"
+	@echo "... src/utils.i"
+	@echo "... src/utils.s"
 	@echo "... src/vest.obj"
 	@echo "... src/vest.i"
 	@echo "... src/vest.s"
